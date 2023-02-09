@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="{% static 'logo.jpg' %}" type="image/x-icon" />
+    <link rel="stylesheet" type= "text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>CED ASSET MANAGEMENT</title>
+  </head>
+  <body>
+      {% include "navbar.html" %}
+      
+      <div class="container-fluid">
+        <div class="row">
+          {% include "sidebar.html" %}
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4" style="margin-top: 4%;">
+            <div class="card-group">
+              <div class="card" style="max-width: 18rem;margin-right: 2%;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                <div class="card-header"><a href="{% url 'pmfilter' %}">PPM DUE</a></div>
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                  <p class="card-text"></p>{{ pmdues }}
+                </div>
+              </div>
+              <div class="card" style="max-width: 18rem;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                <div class="card-header">
+                  <a href="{% url 'calfilter' %}">CALIBRATION DUE</a>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                  <p class="card-text"></p>{{ caldues }}
+                </div>
+              </div>
+              <div class="card" style="max-width: 18rem;box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);margin-left: 2%;">
+                <div class="card-header">PENDING CM</div>
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                  <p class="card-text"></p>
+                </div>
+              </div>
+            </div>
+            {% block content %}
+
+            {% endblock content %}
+          </main>
+        </div>
+      </div>
+
+    <!-- Optional JavaScript -->
+    <script src="{% static 'jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'jquery.bootstrap.modal.forms.js' %}"></script>
+    <script src="{% static 'jquery-3.5.1.js' %}"></script>
+    <script src="{% static 'jquery.dataTables.min.js' %}"></script>
+    <script>
+      $(document).ready(function() {
+      $('#assetlist').DataTable({stateSave: true});
+      } );
+    </script>
+    <script>
+      $(document).ready(function() {
+      $('#wolist').DataTable({stateSave: true});
+      } );
+    </script>
+  </body>
+</html>

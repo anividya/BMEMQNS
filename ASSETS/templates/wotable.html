@@ -1,0 +1,128 @@
+{% extends "base2.html" %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% block content %}
+<div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+  <form method="get" style="margin-top: 3%;">
+        <div class="col">
+            <div class="row" style="inline-size: 100%;">
+                  <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                      {{ filter.form.wo_id.label_tag }}
+                      {% render_field filter.form.wo_id class="form-control" %}
+                  </div>
+                  <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                      {{ filter.form.asset_id.label_tag }}
+                      {% render_field filter.form.asset_id class="form-control" %}
+                  </div>
+                  <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                      {{ filter.form.slno.label_tag }}
+                      {% render_field filter.form.slno class="form-control" %}
+                  </div>
+                  <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                      {{ filter.form.make.label_tag }}
+                      {% render_field filter.form.make class="form-control" %}
+                  </div>
+                  <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                    {{ filter.form.model.label_tag }}
+                    {% render_field filter.form.model class="form-control" %}
+                  </div>
+                  <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                    {{ filter.form.dept.label_tag }}
+                    {% render_field filter.form.dept class="form-control" %}
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="float: right;height: 40px;align-self: center;margin-bottom: 2%;margin-top: 2%;margin-left: 2%;">
+                      Search
+                  </button>
+              </div>
+        </div>
+    </form>
+</div>
+<div class="container" style="margin-top: 0%;">
+ <div class="table-responsive-sm">          
+    <table class="table table-bordered">
+      <table id="wolist" class="display" style="width:100%">
+        <thead class="boder-bottom font-weight-bold">
+          <tr>
+            <td colspan="0">WO ID</td>
+            <td>Asset ID</td>
+            <td>Asset Name</td>
+            <td>Make</td>
+            <td>Model</td>
+            <td>Serial No:</td>
+            <td>DEPT:</td>
+            <td>Description</td>
+            <td>WO Date</td>
+            <td>STAT</td>
+            <td>
+              <a href="#" class="btn btn-outline-success">Add</a>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for Workbook in filter.qs %}
+          <tr>
+            <td colspan="0">{{Workbook.wo_id}}</td>
+            <td>{{Workbook.asset_id}}</td>
+            <td>{{Workbook.asset_name}}</td>
+            <td>{{Workbook.make}}</td>
+            <td>{{Workbook.model}}</td>
+            <td>{{Workbook.slno}}</td>
+            <td>{{Workbook.dept}}</td>
+            <td>{{Workbook.description}}</td>
+            <td>{{Workbook.wo_date}}</td>
+            <td colspan="0" id="status-{{forloop.counter}}">{{Workbook.status}}</td>
+            <td>
+                <a href="#modalform-{{forloop.counter}}" class="btn btn-warning btn-sm" id="takewo-{{forloop.counter}}" data-toggle="modal" onclick="assignwo('{{forloop.counter}}'),tk_wo('{{forloop.counter}}')" >
+                  <i  class="fas fa-database"></i> Take_WO
+                </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+{% for Workbook in index %} 
+{% load crispy_forms_tags %}
+<div class="modal fade" id="modalform-{{forloop.counter}}" role="dialog" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content" >
+        <div class="container" >
+          <div class="modal-header">
+                <h5 class="modal-title">EDIT</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+          </div>
+          <div class="modal-body" >
+            <form action="/update_wo/{{Workbook.pk}}" method="post"  autocomplete="off" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class = "form-row align-items-center">
+                <div class="col-auto">
+                  <label style="margin-bottom: 6%;">Assigned To</label>
+                  <input class="form-control" id="eng_id" name="eng_id" readonly value="{{user.username|title}}">
+                </div>
+                <div class="col-auto">
+                  <label  style="margin-bottom: 6%;">Respond Date&Time</label>
+                  <input class="form-control" id="wo_attended{{forloop.counter}}" name="wo_attended" readonly value="{{Wookbook.wo_attended}}">
+                </div>
+                <div class="col-auto">
+                  <input class="form-control" id="stat" type="hidden" name="status" value="ASSIGNED">
+                </div>
+              </div>
+              <button type="submit"    class="btn btn-success" style="margin-top: 2%;"><i class="fas fa-database"></i> Assign</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endfor %}
+<!-- End_Modal -->
+
+{% endblock content %}
+

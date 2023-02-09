@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% block content %}
+
+<form action="" method="post"  autocomplete="off" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+      <div class="card-header">
+        <h1 class="card-title">Service Action</h1>
+      </div>
+      <div class="card-body">
+        <div class = "form-row align-items-center">
+          <div class="col-auto" >
+            <label style="margin-bottom: 6%;">Description</label>
+            <textarea  class="form-control"  rows="3"  name="description" readonly>{{ form.description.value }}</textarea>
+          </div>
+          <div class="col-auto">
+            <label style="margin-top: 6%;">Reported Date: </label>
+            <input id="wo_date" type="datetime" value="{{ ct|date:'Y-m-d H:i' }}" readonly>
+          </div>
+          <div class="col-auto">
+            <label style="margin-bottom: 6%;">Action</label>
+            <textarea class="form-control" rows="3"  name="action" value="{{Wookbook.action}}" required></textarea>
+          </div>
+          <div class="col-auto">
+            <label  style="margin-bottom: 6%;">Work Done Date&Time</label>
+            <input class="form-control" id="wo_done" type="datetime-local" name="wo_done" onchange="duration()" required>
+          </div>
+          <div class="col-auto">
+            <label style="margin-top: 6%;">Down Time in Minutes:</label>
+            <input class="form-control" id="dwtm" name="downtime" readonly >
+          </div>
+          <div class="col-auto" >
+            <canvas  style="background-color: bisque;margin-top: 6%;overflow: scroll;display: block;" id="myCanvas" width="200" height="100" name="sign"></canvas>
+            <input id="btnSubmitSign" type="button" style="margin-top: 2%;" data-inline="true" data-mini="true" data-theme="b" value="Submit Sign" onclick="fun_submit()" />
+            <input id="btnclear" type="button" style="margin-top: 2%;" data-inline="true" data-mini="true" data-theme="b" value="Clear" onclick="clearbtn()" />
+          </div>
+          <div class="col-auto">
+            <div data-role="page">
+              <div id="page" data-role="content" ></div>
+              <input type="hidden" id="canvas_data" name="canvas_data" required>
+            </div>
+          </div>
+          <div class="col-auto">
+            <input class="form-control" type="hidden" name="status" value="ENGCLOSED">
+          </div>
+        </div>
+      </div>
+      <div class="col-auto" style="margin-bottom: 2%;">
+        <a href="#upload" class="btn btn-success" style="margin-top: 2%;display: inline-block;" data-toggle="modal">
+          <i  class="fas fa-database"></i> UPLOAD REPORT
+        </a>
+        <a href="#upload_inv" class="btn btn-success" style="margin-top: 2%;display: inline-block;margin-left: auto;" data-toggle="modal">
+          <i  class="fas fa-database"></i> UPLOAD INVOICE
+        </a>
+      </div>
+    </div>
+    <div class="col-auto" >
+      <button type="submit" id="sbtn"  class="btn btn-success" style="margin-top: 2%;display: inline-block;"><i class="fas fa-database"></i> Submit</button>
+      <button type="button" class="btn btn-warning" style="margin-top: 2%;display: inline-block;"><i class="fas fa-close"></i><a href="{% url 'my_wo' %}"> Back</a></button>
+    </div>
+  </form>
+
+<div class="modal fade" id="upload" role="dialog" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="container" >
+        <div class="modal-header">
+              <h5 class="modal-title">UPLOAD FILE</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body" >
+          <form action="#" method="post"  autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class = "form-row align-items-center">
+              <div class="col-auto">
+                <label style="margin-bottom: 6%;"> Service Reports</label>
+                <input class="form-control" type="file" id="sr" >
+                <button type="submit" class="btn btn-success" style="margin-top: 2%;"><i class="fas fa-database"></i> Upload</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="upload_inv" role="dialog" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="container" >
+        <div class="modal-header">
+              <h5 class="modal-title">UPLOAD FILE</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+        </div>
+        <div class="modal-body" >
+          <form action="#" method="post"  autocomplete="off" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class = "form-row align-items-center">
+              <div class="col-auto">
+                <label style="margin-bottom: 6%;"> INVOICE</label>
+                <input class="form-control" type="file" id="sr" >
+                <button type="submit" class="btn btn-success" style="margin-top: 2%;"><i class="fas fa-database"></i> Upload</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+  <div class="flex-column">
+    <div class="form-header" style="text-decoration-line:underline">
+      <h5 class="form-title">ASSET ENTRY</h5>
+      </button>
+    </div>
+    <div class="jumbotron">
+      <form action="" method="post" autocomplete="off" enctype="multipart/form-data" id="search-form">
+        {% csrf_token %}
+        <div class = "form-row align-items-center">
+          <div class="row" style="margin-top: 0%;">
+            <div class="col-auto" aria-required="true">Asset ID:  
+              {{ form.assetid }}
+            </div>
+            <div class="col-auto" aria-required="true">Asset Name:
+              {{ form.assetname }}
+            </div>
+            <div class="col-auto" aria-required="true">Make:
+              {{ form.asset_make }}
+            </div>
+          </div>
+          <div class="row" style="margin-top: 4%;">
+            <div class="col-auto" aria-required="true">Model:     
+              {{ form.asset_model }}
+            </div>
+            <div class="col-auto" aria-required="true">Serial Number:
+              {{ form.slno }}
+            </div>
+            <div class="col-auto" aria-required="true">Department:
+              {{ form.dept }}
+            </div>
+          </div>
+          <div class="row" style="margin-top: 4%;">
+            <div class="col-auto" aria-required="true">PPM Due:
+              {{ form.pmdue }}
+            </div>
+            <div class="col-auto" aria-required="true">PPM Done:
+              {{ form.pmdone }}
+            </div>
+            <div class="col-auto" aria-required="true">Cal Done:
+              {{ form.caldone }}
+            </div>
+          </div>
+          <div class="row" style="margin-top: 4%;">
+            <div class="col-auto" aria-required="true">Cal Due:
+              {{ form.caldue }}
+            </div>
+            <div class="col-auto" aria-required="true">Warranty Start:
+              {{ form.wrstart }}
+            </div>
+            <div class="col-auto" aria-required="true">Warranty End:
+              {{ form.wrend }}
+            </div>
+          </div>
+          <div class="row" style="margin-top: 4%;">
+            <div class="col-auto" aria-required="true">AMC/CMC Start:
+              {{ form.mcstart }}
+            </div>
+            <div class="col-auto" aria-required="true">AMC/CMC End:
+              {{ form.mcend }}
+            </div>
+            <div class="col-auto" aria-required="true">Status:
+              {{ form.stat }}
+            </div>
+          </div>
+          <div class="row" style="margin-top: 4%;">
+            <div class="col-auto" aria-required="true">Installation Documents:
+              {{ form.doc }}
+            </div>
+            <div class="col-auto" aria-required="true">Invoice:
+              {{ form.invoice }}
+            </div>
+          </div>
+        </div> 
+        <button type="submit" class="btn btn-success" style="margin-top: 2%;"><i class="fas fa-database"></i> Submit</button>  
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

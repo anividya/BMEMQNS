@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% block content %}
+<form>
+    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+        <div class="card-header">
+            <h1 class="card-title">Asset Details</h1>
+        </div>
+        <div class="card-body">
+            <div class = "form-row align-items-center">
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Asset ID</label>
+                    <input name="assetid" value="{{form.assetname.value}}" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Asset Name</label>
+                    <input name="assetname" value="{{form.assetname.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Make</label>
+                    <input name="asset_make" value="{{form.asset_make.value}}" type="text" class="form-control"  disabled >
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Model</label>
+                    <input name="asset_model" value="{{form.asset_model.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Serial Number</label>
+                    <input name="slno" value="{{form.slno.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Dept</label>
+                    <input name="dept" value="{{form.dept.value}}"  type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">PM Done</label>
+                    <input name="pmdone" value="{{form.pmdone.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">PM Due</label>
+                    <input name="pmdue" value="{{form.pmdue.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Cal Done</label>
+                    <input name="caldone" value="{{form.caldone.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Cal Due</label>
+                    <input name="caldue" value="{{form.caldue.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Warranty Start</label>
+                    <input name="wrstart" value="{{form.wrstart.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">Warranty End</label>
+                    <input name="wrend" value="{{form.wrend.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">AMC/CMC Start</label>
+                    <input name="mcstart" value="{{form.mcstart.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">AMC/CMC End</label>
+                    <input name="mcend" value="{{form.mcend.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="col-auto">
+                    <label style="margin-bottom: 0%;">STATUS</label>
+                    <input name="stat" value="{{form.stat.value}}" type="text" class="form-control" disabled>
+                </div>
+                <div class="row" style="margin-top: 4%;">
+                    <div class="col-auto" aria-required="true">Installation Documents:
+                      {{ form.doc }}
+                    </div>
+                    <div class="col-auto" aria-required="true" >Invoice:
+                      {{ form.invoice }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);margin-top: 1%;">
+    <div class="card-header">
+        <h1 class="card-title">History of Asset</h1>
+    </div>
+    <div class="card-body">
+        <div class="container" style="margin-top: 0%;">
+            <div class="table-responsive-sm">          
+               <table class="table table-bordered">
+                 <table id="wolist" class="display" style="width:100%">
+                   <thead class="boder-bottom font-weight-bold">
+                     <tr>
+                       <td colspan="0">WO ID</td>
+                       <td>Asset ID</td>
+                       <td>Asset Name</td>
+                       <td>Make</td>
+                       <td>Model</td>
+                       <td>Serial No:</td>
+                       <td>DEPT:</td>
+                       <td>Description</td>
+                       <td>WO Date</td>
+                       <td>STAT</td>
+                       <td>
+                         <a href="#" class="btn btn-outline-success">Add</a>
+                       </td>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     {% for Workbook in wolist %}
+                     <tr>
+                       <td colspan="0">{{Workbook.wo_id}}</td>
+                       <td>{{Workbook.asset_id}}</td>
+                       <td>{{Workbook.asset_name}}</td>
+                       <td>{{Workbook.make}}</td>
+                       <td>{{Workbook.model}}</td>
+                       <td>{{Workbook.slno}}</td>
+                       <td>{{Workbook.dept}}</td>
+                       <td>{{Workbook.description}}</td>
+                       <td>{{Workbook.wo_date}}</td>
+                       <td colspan="0" id="status-{{forloop.counter}}">{{Workbook.status}}</td>
+                       <td>
+                           <a  href="{% url 'generate_pdf' Workbook.pk  %}" target="_blank" class="btn btn-warning btn-sm" >
+                             <i class="fas fa-info"></i> View
+                           </a>
+                       </td>
+                     </tr>
+                     {% endfor %}
+                   </tbody>
+                 </table>
+               </table>
+             </div>
+           </div>
+    </div>
+</div>
+
+{% endblock content %}

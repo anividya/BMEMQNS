@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="{% static 'logo.jpg' %}" type="image/x-icon" />
+    <link rel="stylesheet" type= "text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    <title>CED ASSET MANAGEMENT</title>
+  </head>
+  <body>
+      {% include "navbar.html" %}
+      <div class="container-fluid">
+        <div class="row">
+          {% include "sidebar.html" %}
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4" style="margin-top: 4%;">
+            {% block content %}
+
+            {% endblock content %}
+          </main>
+        </div>
+      </div>
+
+    <!-- Optional JavaScript -->
+    <script src="{% static 'jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'jquery.bootstrap.modal.forms.js' %}"></script>
+    <script src="{% static 'jquery-3.5.1.js' %}"></script>
+    <script src="{% static 'jquery.dataTables.min.js' %}"></script>
+    <script>
+      $(document).ready(function() {
+      $('#wolist').DataTable({stateSave: true});
+      } );
+
+      //////////////////////////////////////////////
+          var canvas = document.getElementById("myCanvas");
+          var ctx = canvas.getContext("2d");
+          function init() 
+          {
+            // Canvas Functions
+            
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "gray";
+            ctx.globalAlpha = 0.5;
+            ctx.fillText("Pls Sign Here", 10, 50);
+            canvas.addEventListener("mousedown", startDrawing);
+            canvas.addEventListener("mousemove", draw);
+            canvas.addEventListener("mouseup", stopDrawing);
+            canvas.addEventListener("touchstart", startDrawing);
+            canvas.addEventListener("touchend", stopDrawing);
+            canvas.addEventListener("touchmove", draw);
+            var isDrawing = false;
+            var dr = false;
+          }
+ 
+          function startDrawing(event) 
+          {
+            var rect = canvas.getBoundingClientRect();
+            isDrawing = true;
+            dr = true;
+            ctx.beginPath();
+            ctx.moveTo(event.clientX - rect.left, event.clientY- rect.top);
+          }
+
+          function draw(event) 
+          {
+            var rect = canvas.getBoundingClientRect();
+            if (isDrawing === true) {
+                ctx.lineTo(event.clientX - rect.left, event.clientY- rect.top);
+                ctx.stroke();
+            }
+          }
+          
+          function stopDrawing() 
+          {
+            isDrawing = false;
+            ctx.closePath();
+          }
+          
+          function fun_submit() 
+          {
+            if(dr) {
+              var canvas = $("#myCanvas").get(0);
+              var imgData = canvas.toDataURL();
+              var canvas = document.getElementById("myCanvas");
+              var data = canvas.toDataURL();
+              document.getElementById("canvas_data").value = data;
+              jQuery('#page').find('p').remove();
+              jQuery('#page').find('img').remove();
+              jQuery('#page').append(jQuery('<p>Your Sign:</p>'));
+              jQuery('#page').append($('<img/>').attr('src',imgData));
+            }
+            else
+            {
+              alert('Please sign and Click Submit Sign');
+            }  
+          }
+
+          function clearbtn() 
+          {
+            console.log("hai")
+            const canvas = document.getElementById("myCanvas");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            isDrawing = false;
+            dr = false;
+          }
+    </script>
+  </body>
+</html>

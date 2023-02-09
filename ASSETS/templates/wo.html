@@ -1,0 +1,87 @@
+{% extends "base2.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+  <div class="card-header">
+    <h1 class="card-title">Generate Work Order</h1>
+  </div>
+    <form method="get" >
+          <div class="col">
+              <div class="row" style="inline-size: 100%;">
+                    <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                        {{ filter.form.assetid.label_tag }}
+                        {% render_field filter.form.assetid class="form-control" %}
+                    </div>
+                    <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                        {{ filter.form.assetname.label_tag }}
+                        {% render_field filter.form.assetname class="form-control" %}
+                    </div>
+                    <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                        {{ filter.form.Make.label_tag }}
+                        {% render_field filter.form.Make class="form-control" %}
+                    </div>
+                    <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                        {{ filter.form.Dept.label_tag }}
+                        {% render_field filter.form.Dept class="form-control" %}
+                    </div>
+                    <div class="form-group col-sm-4 col-md-2 col-lg-2" >
+                      {{ filter.form.Seral_No.label_tag }}
+                      {% render_field filter.form.Seral_No class="form-control" %}
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="float: right;height: 40px;align-self: center;margin-bottom: 2%;margin-top: 2%;margin-left: 2%;">Search</button>
+                </div>
+          </div>
+      </form>
+</div>
+  <div class="container" style="margin-top: 1%;" >
+      <div class="table-responsive-sm">          
+          <table class="table table-bordered">
+            <table id="assetlist" class="display" style="width:100%">
+              <thead class="boder-bottom font-weight-bold">
+                <tr>
+                  <td>Asset ID</td>
+                  <td>Asset Name</td>
+                  <td>Make</td>
+                  <td>Model</td>
+                  <td>Sl_No</td>
+                  <td>Dept</td>
+                  <td>PMSTAT</td>
+                  <td>CALSTAT</td>
+                  <td>AMC/CMC</td>
+                  <td>STAT</td>
+                  <td>
+                    <a href="#" class="btn btn-outline-success">
+                      <i class="fas fa-plus"></i>
+                    </a>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+                {% for Asset in filter.qs %}
+                <tr>
+                  <td id="#table td">{{Asset.assetid}}</td>
+                  <td>{{Asset.assetname}}</td>
+                  <td>{{Asset.asset_make}}</td>
+                  <td>{{Asset.asset_model}}</td>
+                  <td>{{Asset.slno}}</td>
+                  <td>{{Asset.dept}}</td>
+                  <td>{{Asset.pmstat}}</td>
+                  <td>{{Asset.calstat}}</td>
+                  <td>{{Asset.amc_cmc}}</td>
+                  <td>{{Asset.stat}}</td>
+                  <td>
+                    <a href="#modalform" class="btn btn-warning btn-sm" data-toggle="modal"  onclick="myFunction('{{Asset.assetid}}','{{Asset.assetname}}','{{Asset.asset_make}}','{{Asset.asset_model}}','{{Asset.dept}}','{{Asset.slno}}')">
+                      <i class="fas fa-add"></i>WO
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </table>
+      </div>
+  </div>
+{% for form in form  %}
+{% include 'woform.html' %}
+{% endfor %}
+{% endblock content %}

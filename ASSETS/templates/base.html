@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="{% static 'logo.jpg' %}" type="image/x-icon" />
+    <link rel="stylesheet" type= "text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+    <title>CED ASSET MANAGEMENT</title>
+  </head>
+  <body>
+      {% include "navbar.html" %}
+      <div class="container-fluid">
+        <div class="row">
+          {% include "sidebar.html" %}
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4" style="margin-top: 4%;">
+            {% block content %}
+
+            {% endblock content %}
+          </main>
+        </div>
+      </div>
+
+    <!-- Optional JavaScript -->
+    <script src="{% static 'jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap.min.js' %}"></script>
+    <script src="{% static 'jquery.bootstrap.modal.forms.js' %}"></script>
+    <script src="{% static 'jquery-3.5.1.js' %}"></script>
+    <script src="{% static 'jquery.dataTables.min.js' %}"></script>
+    <script>
+      $(document).ready(function() {
+      $('#assetlist').DataTable({stateSave: true});
+      } );
+    </script>
+    <script>
+      $(document).ready(function() {
+      $('#wolist').DataTable({stateSave: true});
+      } );
+    </script>
+    <script>
+        function myFunction(data,data3,data4,data5,data6,data7) {
+          //console.log(data);  // "some-data"
+          console.log(data3);
+          var field = document.getElementById("workassetid");
+          field.value = data;
+          var field4 = document.getElementById("assetname");
+          field4.value = data3;
+          var field5 = document.getElementById("make");
+          field5.value = data4;
+          var field6 = document.getElementById("model");
+          field6.value = data5;
+          var field7 = document.getElementById("dept");
+          field7.value = data6;
+          var field8 = document.getElementById("slno");
+          field8.value = data7;
+          $.ajax({
+            url: '/get_data/',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data2) 
+              {
+                // update the form field with the returned data
+                //console.log(data2.key);
+                var field2 = document.getElementById("workid");
+                field2.value = data2.key;
+                var field3 = document.getElementById("workdate");
+                field3.value = data2.date;
+                var field9 = document.getElementById("stat");
+                field9.value = "RELESED";
+              }
+          });
+        }
+        
+        
+    </script>
+    <script>
+      		var canvas = document.getElementById("myCanvas{{forloop.counter}}");
+          var isTouchDevice = 'ontouchstart' in document.documentElement;
+          
+          var ctx = canvas.getContext("2d");
+          ctx.font = "30px Arial";
+          ctx.fillStyle = "gray";
+          ctx.globalAlpha = 0.5;
+          ctx.fillText("Pls Sign Here", 10, 50);
+          canvas.addEventListener("mousedown", startDrawing);
+          canvas.addEventListener("mousemove", draw);
+          canvas.addEventListener("mouseup", stopDrawing);
+          canvas.addEventListener("touchstart", startDrawing);
+          canvas.addEventListener("touchend", stopDrawing);
+          canvas.addEventListener("touchmove", draw);
+          var filltext = true;
+          var isDrawing = false;
+          var dr = false;
+        
+          function startDrawing(event) {
+          isDrawing = true;
+          dr = true;
+          var rect = canvas.getBoundingClientRect();
+          ctx.beginPath();
+          ctx.moveTo(event.clientX - rect.left, event.clientY- rect.top);
+          }
+
+          function draw(event) {
+          var rect = canvas.getBoundingClientRect();
+          if (isDrawing === true) {
+            ctx.lineTo(event.clientX - rect.left, event.clientY- rect.top);
+            ctx.stroke();
+          }
+          }
+          function stopDrawing() {
+          isDrawing = false;
+          ctx.closePath();
+          }
+          function fun_submit() {
+            if(dr) {
+              var canvas = $("#myCanvas").get(0);
+              var imgData = canvas.toDataURL();
+              var canvas = document.getElementById("myCanvas");
+              var data = canvas.toDataURL();
+              document.getElementById("canvas_data").value = data;
+              jQuery('#page').find('p').remove();
+              jQuery('#page').find('img').remove();
+              jQuery('#page').append(jQuery('<p>Your Sign:</p>'));
+              jQuery('#page').append($('<img/>').attr('src',imgData));
+            }else{
+              alert('Please sign and Click Submit Sign');
+            }  
+          }
+          function disable() {
+            if(dr) {
+              var input = document.getElementById("workassetid");
+              input.removeAttribute("disabled");
+              var input1 = document.getElementById("workid");
+              input1.removeAttribute("disabled");
+              var input2 = document.getElementById("workdate");
+              input2.removeAttribute("disabled");
+            }else{
+              alert('Please sign and Click Submit Sign');
+              var sb = document.getElementById("sbtn");
+              sb.removeAttribute("submit");
+            } 
+          }
+          function clearbtn() {
+            const canvas = document.getElementById("myCanvas");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+          function assignwo(count) {
+            let num = count;
+            let str = "wo_attended";
+            let result = str + num;
+            $.ajax({
+              url: '/woajax/',
+              type: 'GET',
+              dataType: 'json',
+              success: function(data22) 
+                {
+                  // update the form field with the returned data
+                  console.log(data22.keydata);
+                  var field10 = document.getElementById(result);
+                  field10.value = data22.keydata;
+                }
+            });
+          }
+    </script>
+    <script>
+      function tk_wo(count) 
+      {
+        let num = count;
+        let str = "#status-";
+        let tkw = "#takewo-";
+        let result = str + num;
+        let tk = tkw + num;
+        var status = $(result).text();
+        if (status == "ASSIGNED") {
+          $(tk).prop("disabled", true);
+        }
+        if (status == "ENGCLOSED") {
+          $(tk).prop("disabled", true);
+        }
+        
+      }
+
+      function duration()
+      {
+        var start = document.getElementById("wo_date");
+        var end = document.getElementById("wo_done");
+        var diff = document.getElementById("dwntm");
+        // Calculate the difference in milliseconds
+        //var difference = end - start;
+        // Convert the difference to minutes
+        //var minutes = difference / (1000 * 60);
+        
+        //diff.value = minutes
+        var wodate = new Date(start.value);
+        var wodone = new Date(end.value);
+        var difference = wodone - wodate;
+        var minutes = difference / (1000 * 60);
+        console.log(wodate);
+        console.log(wodone);
+        console.log(difference);
+        console.log(minutes);
+        var dwntm = document.getElementById("dwtm");
+        dwntm.value = minutes;
+
+      }
+
+    </script>
+
+  </body>
+</html>

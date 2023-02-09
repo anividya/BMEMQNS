@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% load bootstrap %}
+{% load static %}
+{% block content %}
+{% load static %}
+{% if messages %}
+<div class="message-box" style="background-color: rgb(145, 142, 142);border: 1px solid #ccc; padding: 20px; width: 50%; opacity: 1;animation: fade-out 1s;">
+  <ul class="messages" style="color: rgb(92, 179, 5);block-size: 4%;">
+    {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+<div class="container" style="margin-top: 5%;">
+ <div class="table-responsive-sm">          
+    <table class="table table-bordered">
+      <table id="assetlist" class="display" style="width:100%">
+        <thead class="boder-bottom font-weight-bold">
+          <tr>
+            <td colspan="0">Asset ID</td>
+            <td>Asset Name</td>
+            <td>Make</td>
+            <td>Model</td>
+            <td>Sl_No</td>
+            <td>Dept</td>
+            <td>PMSTAT</td>
+            <td>CALSTAT</td>
+            <td>AMC/CMC</td>
+            <td>STAT</td>
+            <td>
+              <a href="{% url 'asset_insert' %}" class="btn btn-outline-success">Add</a>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for Asset in index %}
+          <tr>
+            <td colspan="0">{{Asset.assetid}}</td>
+            <td>{{Asset.assetname}}</td>
+            <td>{{Asset.asset_make}}</td>
+            <td>{{Asset.asset_model}}</td>
+            <td>{{Asset.slno}}</td>
+            <td>{{Asset.dept}}</td>
+            <td>{{Asset.pmstat}}</td>
+            <td>{{Asset.calstat}}</td>
+            <td>{{Asset.amc_cmc}}</td>
+            <td colspan="0">{{Asset.stat}}</td>
+            <td>
+                <a href="#exampleModal-{{forloop.counter}}" class="btn btn-warning btn-sm" data-toggle="modal">
+                  <i class="fas fa-info"></i> View
+                </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+{% for Asset in index %}
+{% include 'assetupdate.html' %}
+{% endfor %}
+<!-- End_Modal -->
+
+{% endblock content %}
+
